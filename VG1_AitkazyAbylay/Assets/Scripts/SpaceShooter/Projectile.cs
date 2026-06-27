@@ -40,6 +40,11 @@ namespace SpaceShooter {
 				}
 			}
 		}
+		void Update() {
+    // TODO: Make these dynamic
+    float acceleration = GameController.instance.missileSpeed / 2f;
+    float maxSpeed = GameController.instance.missileSpeed;
+}
 		void FixedUpdate() {
 			// TODO: Make these dynamic
 			float acceleration = 1f;
@@ -74,6 +79,9 @@ namespace SpaceShooter {
 					Quaternion.identity
 				);
 				Destroy(explosion, 0.25f);
+
+			    GameController.instance.EarnPoints(10);
+	
 			}
 		}
 
