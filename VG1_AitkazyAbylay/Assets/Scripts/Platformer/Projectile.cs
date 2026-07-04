@@ -12,8 +12,16 @@ namespace Platformer {
 			_rigidbody2D.linearVelocity = transform.right * 10f;
 		}
 		void OnCollisionEnter2D(Collision2D collision) {
+			if(collision.gameObject.GetComponent<Target>()) {
+				SoundManager.instance.PlaySoundHit();
+			} else if(collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+				SoundManager.instance.PlaySoundMiss();
+			}
 			Destroy(gameObject);
+
 		}
+
+
         
 	}
 }

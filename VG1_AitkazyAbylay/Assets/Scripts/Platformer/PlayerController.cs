@@ -1,25 +1,39 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
+
  
 namespace Platformer {
 	public class PlayerController : MonoBehaviour
 	{
+		public static PlayerController instance;
 		// Outlets
 		Rigidbody2D _rigidbody2D;
 		public Transform aimPivot;
 		public GameObject projectilePrefab;
 		SpriteRenderer spriteRenderer;
 		Animator animator;
+		public TMP_Text scoreUI;
+
 
 
 		// State Tracking
 		public int jumpsLeft;
+		public int score;
+		public bool isPaused;
 
+		
+		// Methods
+		void Awake() {
+			instance = this;
+		}
 		// Methods
 		void Start() {
 			_rigidbody2D = GetComponent<Rigidbody2D>();
 			spriteRenderer = GetComponent<SpriteRenderer>();
 			animator = GetComponent<Animator>();
+
+			score = PlayerPrefs.GetInt("Score");
 		}
 		void FixedUpdate() {
 			// This Update Event is sync'd with the Physics Engine
@@ -33,6 +47,12 @@ namespace Platformer {
 		}		
  
 		void Update() {
+			// Update UI
+			scoreUI.text = score.ToString();
+
+			if(isPaused) {
+				return;
+			}
 			// Move Player Left
 			if(Keyboard.current.aKey.isPressed) {
 				_rigidbody2D.AddForce(18f * Time.deltaTime * Vector2.left, ForceMode2D.Impulse);
@@ -69,6 +89,9 @@ namespace Platformer {
 				}
 			}
 			animator.SetInteger("JumpsLeft", jumpsLeft);
+			if(Keyboard.current.escapeKey.wasPressedThisFrame) {
+				MenuController.instance.Show();
+			}
 		}
 		void OnCollisionStay2D(Collision2D collision) {
 			// Check that we collided with Ground
@@ -89,6 +112,10 @@ namespace Platformer {
 				}
 			}
 		}
+		public void ResetScore() {
+			score = 0;
+			PlayerPrefs.DeleteKey("Score");
+		}		
 
 	}
 }
