@@ -65,7 +65,7 @@ namespace Adventure {
  
 			if(Keyboard.current.spaceKey.wasPressedThisFrame) {
 				_animator.SetTrigger("attack");
-			}
+			
 
 
 				// Convert the enumeration to an index
@@ -85,7 +85,7 @@ namespace Adventure {
 					}
 				}
 
-
+			}
 
 
             
